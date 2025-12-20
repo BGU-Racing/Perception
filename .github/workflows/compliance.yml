@@ -1,0 +1,28 @@
+name: "Compliance Check"
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  enforce-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Branch and PR Naming
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const branchName = pr.head.ref;
+            const prTitle = pr.title;
+
+            // 1. Check if Branch starts with "issue-[number]-"
+            const branchRegex = /^issue-\d+-/i;
+            if (!branchRegex.test(branchName)) {
+              core.setFailed(`Branch name "${branchName}" must start with 'issue-[number]-' (e.g., issue-123-feature)`);
+            }
+
+            // 2. Check if PR Title starts with "#[number] "
+            const titleRegex = /^#\d+\s/;
+            if (!titleRegex.test(prTitle)) {
+              core.setFailed(`PR Title "${prTitle}" must start with the issue number (e.g., #123 Fixed the bug)`);
+            }
