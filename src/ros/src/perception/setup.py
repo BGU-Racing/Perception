@@ -14,9 +14,9 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='root',
-    maintainer_email='root@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    maintainer_email='grisha.guterman@gmail.com',
+    description='BGRacing Perception Team Package in ROS2',
+    license='MIT',
     extras_require={
         'test': [
             'pytest',
