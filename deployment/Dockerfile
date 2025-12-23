@@ -58,6 +58,7 @@ RUN pip install --upgrade pip && \
         scikit-learn \
         # Computer vision
         opencv-python \
+        open3d \
         # YOLO11 (via Ultralytics)
         ultralytics \
         ultralytics-v11
