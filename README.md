@@ -10,6 +10,35 @@ All development is intended to run inside the provided Docker environment.
 
 ---
 
+```
+PERCEPTION/
+├── data/
+├── deployment/
+│   ├── Makefile
+│   └── Dockerfile
+├── src/
+│   └── ros/
+│       └── src/
+│           └── perception/
+│               ├── perception/
+│               │   ├── camera/
+│               │   ├── lidar/
+│               │   │   ├── algo/
+│               │   │   │   ├── calibration/
+│               │   │   │   │   └── python/
+│               │   │   │   └── detection/
+│               │   │   │       └── python/
+│               │   │   ├── readers/
+│               │   │   │   └── python/
+│               │   │   └── visualizers/
+│               │   └── nodes/
+│               ├── resource/
+│               └── test/
+├── tests/
+├── utils/
+└── README.md
+```
+
 ## Development Environment (Docker + ROS 2 Jazzy)
 
 ### 1. Build the Docker image

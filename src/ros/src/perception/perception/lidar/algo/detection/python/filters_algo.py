@@ -10,7 +10,7 @@ class LidarFilter:
     def __init__(self):
         self.cluster_model = DBSCAN(eps=25, min_samples=15)
 
-        self.filter_tests = [ self.height_test,self.length_test,self.width_test,  self.number_of_pts_test]
+        self.filter_tests = [ self.height_test, self.length_test, self.width_test, self.number_of_pts_test]
         # self.filter_tests = [self.number_of_pts_test]
 
         self.points = None
@@ -240,19 +240,14 @@ class LidarFilter:
         # trim fov to relevant roi
         self.filter_fov()
 
-        # remove ground points
-        
+        # find ground points
         start = time.time()
         self.find_ground_o3d(self.points)
-        print(f"O3D filter_ground runtime: {time.time() - start:.6f} seconds")
 
+        # remove ground points
         self.clear_ground(self.points, height_threshold=0)
 
-
-        # start = time.time()
-        # self.find_ground_skt(self.points)
-        # print(f"Skitlearn filter_ground runtime: {time.time() - start:.6f} seconds")
-        # calculate clusters from points
+        # separation to cluster
         self.points_to_clusters()
 
         # test each cluster to detect cones
@@ -260,35 +255,10 @@ class LidarFilter:
 
         # get the centers of valid clusters
         self.get_cone_centers()
+        
         return self.points, self.ground_points, self.clusters_list, self.centers
 
-    def test_detection_run_time(self, points):
-        self.points = points
-        # test time to filter fov
-        curr_time = self.zero_timer()
-        self.filter_fov()
-        self.rec_time(curr_time)
 
-        # test time to filter ground
-        curr_time = self.zero_timer()
-        self.filter_ground(self.points)
-        self.rec_time(curr_time)
-
-        # test time of clustering algorithm
-        curr_time = self.zero_timer()
-        self.points_to_clusters()
-        self.rec_time(curr_time)
-
-        # test time of tests
-        curr_time = self.zero_timer()
-        self.filter_clusters()
-        self.rec_time(curr_time)
-
-        # get the centers of the predictions
-        self.get_cone_centers()
-
-    def reset_time_measurements(self):
-        self.component_time_list = []
 
 # def main():
 #     LF = LidarFilter()
