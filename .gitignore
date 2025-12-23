@@ -1,8 +1,13 @@
-.vscode/
-build/
-.DS_Store
-.idea/
+# ROS2 / colcon (ignore anywhere)
+**/build/
+**/install/
+**/log/
+**/.colcon/
 
-/workspace/src/ros/src/perception/build/
-/workspace/src/ros/src/perception/install/
-/workspace/src/ros/src/perception/log/
+# Python
+__pycache__/
+*.pyc
+
+# Editors
+.vscode/
+.idea/
