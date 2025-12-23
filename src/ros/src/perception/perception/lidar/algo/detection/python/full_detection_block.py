@@ -1,18 +1,17 @@
-import sys
-import os
 import time
-# sys.path.append('.')
-# sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from BGR_PM.Sensors.Lidar.src.algo.calibration.python import auto_calibrate_point_cloud
-from BGR_PM.Sensors.Lidar.src.readers.python import DeviceReader
-from BGR_PM.Sensors.Lidar.src.algo.detection.python.filters_algo import LidarFilter
-from BGR_PM.Sensors.Lidar.src.visualizers import O3dVisualizer
 import numpy as np
 
+from perception.lidar.algo.calibration.python.auto_calibration import auto_calibrate_point_cloud
+
+from perception.lidar.readers.python.record_reader import NPZFrameReader
+
+from perception.lidar.algo.detection.python.filters_algo import LidarFilter
+
+from perception.lidar.visualizers.o3d_visualizer import O3dVisualizer
 
 class LidarModule:
     def __init__(self):
-        self.lidar_reader = DeviceReader()
+        self.lidar_reader = NPZFrameReader()
         self.lidar_filter = LidarFilter()
         self.rot_mat = None
         self.trans_vec = None

@@ -9,10 +9,7 @@ import pandas as pd
 class LidarFilter:
     def __init__(self):
         self.cluster_model = DBSCAN(eps=25, min_samples=15)
-
         self.filter_tests = [ self.height_test, self.length_test, self.width_test, self.number_of_pts_test]
-        # self.filter_tests = [self.number_of_pts_test]
-
         self.points = None
         self.ground_points = None
         self.clusters_list = None
@@ -178,12 +175,13 @@ class LidarFilter:
         self.points = non_ground_points
         self.ground_points = ground_points
 
-        # Visualization (optional)
-        # if len(ground_points):
-        #     ground_pcd = o3d.geometry.PointCloud()
-        #     ground_pcd.points = o3d.utility.Vector3dVector(ground_points)
-        #     ground_pcd.paint_uniform_color([0.0, 1.0, 0.0])
-        #     o3d.visualization.draw_geometries([ground_pcd], window_name="Ground Points")
+        # Visualiztion
+        # TODO: I dont know how it works, but it is important to make this work.
+        if len(ground_points):
+            ground_pcd = o3d.geometry.PointCloud()
+            ground_pcd.points = o3d.utility.Vector3dVector(ground_points)
+            ground_pcd.paint_uniform_color([0.0, 1.0, 0.0])
+            o3d.visualization.draw_geometries([ground_pcd], window_name="Ground Points")
 
 
     def filter_clusters(self):
@@ -259,6 +257,7 @@ class LidarFilter:
         return self.points, self.ground_points, self.clusters_list, self.centers
 
 
+# Create some main function for testing, for now this is the way, but its bad.
 
 # def main():
 #     LF = LidarFilter()
