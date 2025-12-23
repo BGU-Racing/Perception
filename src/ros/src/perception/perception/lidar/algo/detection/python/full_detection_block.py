@@ -23,7 +23,7 @@ class LidarModule:
     def scan_detect(self):
         pcd_frame = None
         while pcd_frame is None:
-            pcd_frame = self.lidar_reader.callback()
+            pcd_frame = self.lidar_reader.read() # callback()
         # start = time.time()
         pcd_frame = np.vstack([pcd_frame['x'], pcd_frame['y'], pcd_frame['z']]).T
 
@@ -63,7 +63,7 @@ class LidarModule:
     def scan_detect_visualize(self, vis):
         pcd_frame = None
         while pcd_frame is None:
-            pcd_frame = self.lidar_reader.callback()
+            pcd_frame = self.lidar_reader.read() # callback()
         pcd_frame = np.vstack([pcd_frame['x'], pcd_frame['y'], pcd_frame['z']]).T
         self.lidar_filter.points = pcd_frame
         self.lidar_filter.filter_fov()
