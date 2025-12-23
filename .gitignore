@@ -3,6 +3,6 @@ build/
 .DS_Store
 .idea/
 
-src/ros/perception/build/
-src/ros/perception/install/
-src/ros/perception/log/
+/workspace/src/ros/src/perception/build/
+/workspace/src/ros/src/perception/install/
+/workspace/src/ros/src/perception/log/
