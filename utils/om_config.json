@@ -1,0 +1,12 @@
+{
+"device_type":"OM",
+"device_ip":"192.168.0.3",
+"cnc_port": 9100,
+"grab_timeout_milliseconds":100,
+"max_packet_queue_size": 0,
+"channels":
+[
+    {"type":0,"port":9101},
+    {"type":1,"port":9102}
+]
+}
