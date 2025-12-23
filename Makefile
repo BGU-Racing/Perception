@@ -6,7 +6,7 @@ WORKSPACE_DIR = $(PWD)/..
 # --- Build Docker Image ---
 build:
 	@echo "🚀 Building Docker image: $(IMAGE_NAME)"
-	docker build -t $(IMAGE_NAME) -f Dockerfile .
+	docker build -t $(IMAGE_NAME) -f deployment/Dockerfile .
 
 # --- Run Container ---
 run: build
