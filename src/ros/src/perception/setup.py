@@ -23,9 +23,9 @@ setup(
     extras_require={'test': ['pytest']},
     entry_points={
         'console_scripts': [
-            "pcl_recording_reader = perception.lidar.nodes.PCLRecordingReaderNode:main",
-            "pcl_preprocess       = perception.lidar.nodes.PCLPreprocessNode:main",
-            "pcl_detection        = perception.lidar.nodes.PCLDetectionNode:main",
+            "pcl_recording_reader = perception.nodes.PCLRecordingReadNode:main",
+            "pcl_preprocess       = perception.nodes.PCLPreprocessingNode:main",
+            "pcl_detection        = perception.nodes.PCLDetectionNode:main",
         ],
     },
 )

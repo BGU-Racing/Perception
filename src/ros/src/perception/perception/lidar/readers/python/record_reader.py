@@ -1,6 +1,5 @@
 import os
 import glob
-from ament_index_python.packages import get_package_share_directory
 import numpy as np
 
 
@@ -10,19 +9,20 @@ class NPZFrameReader:
     and returns a structured NumPy array.
     """
 
-    class NPZFrameReader:
-        def __init__(self, pattern: str = "*.npz"):
-            data_dir = "/workspace/data"
+    def __init__(self, data_dir: str = "/workspace/data", pattern: str = "*.npz", loop: bool = True):
+        self.files = sorted(glob.glob(os.path.join(data_dir, pattern)))
+        if not self.files:
+            raise FileNotFoundError(f"No NPZ files found in {data_dir} with pattern {pattern}")
 
-            self.files = sorted(glob.glob(os.path.join(data_dir, pattern)))
-            if not self.files:
-                raise FileNotFoundError(f"No NPZ files found in {data_dir}")
-
-            self.idx = 0
+        self.idx = 0
+        self.loop = loop
 
     def read(self) -> np.ndarray:
         if self.idx >= len(self.files):
-            raise StopIteration
+            if self.loop:
+                self.idx = 0
+            else:
+                raise StopIteration
 
         path = self.files[self.idx]
         self.idx += 1
