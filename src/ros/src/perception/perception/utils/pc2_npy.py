@@ -55,16 +55,12 @@ def numpy_to_pointcloud2(points_xyz: np.ndarray, header: Header, fields, point_s
     return msg
 
 def pointcloud2_to_numpy(msg: PointCloud2) -> np.ndarray:
-    point_step = msg.point_step
-    raw = np.frombuffer(msg.data, dtype=np.uint8)
     n = msg.width * msg.height
-    raw = raw.reshape(n, point_step)
+    step = msg.point_step
+    raw = np.frombuffer(msg.data, dtype=np.uint8).reshape(n, step)
 
-    # x,y,z at bytes [0:4], [4:8], [8:12]
-    xyz = np.empty((n, 3), dtype=np.float32)
-    xyz[:, 0] = np.frombuffer(raw[:, 0:4].tobytes(), dtype=np.float32)
-    xyz[:, 1] = np.frombuffer(raw[:, 4:8].tobytes(), dtype=np.float32)
-    xyz[:, 2] = np.frombuffer(raw[:, 8:12].tobytes(), dtype=np.float32)
+    # view first 12 bytes as float32 (x,y,z)
+    xyz = raw[:, :12].view(np.float32).reshape(n, 3).copy()
     return xyz
 
 def centers_to_pose(centers: dict, header, frame_id: str) -> PoseArray:

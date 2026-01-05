@@ -26,7 +26,7 @@ class PCLDetectionNode(Node):
         self.pub = self.create_publisher(PoseArray, self.out_topic, 10)
 
         self.lidar_filter = LidarFilter()
-        self.get_logger().info(f"Detection: {self.in_topic} -> {self.out_topic} (PoseArray)")
+        self.get_logger().info(f"Detection: {self.in_topic} -> {self.out_topic}")
 
     def call_back(self, msg: PointCloud2):
         try:
@@ -35,12 +35,9 @@ class PCLDetectionNode(Node):
             self.get_logger().error(f"Failed to decode PointCloud2: {e}")
             return
 
-        # Empty input cloud -> publish empty detections (utils handles it)
+        # Empty input cloud -> publish empty detections
         if points.shape[0] == 0:
-            self.get_logger().warn(
-                "Empty pointcloud frame -> publishing empty detections",
-                throttle_duration_sec=2.0
-            )
+            self.get_logger().warn("Empty pointcloud frame -> publishing empty detections", throttle_duration_sec=2.0)
             pa = centers_to_pose({}, msg.header, self.frame_id)
             self.pub.publish(pa)
             return

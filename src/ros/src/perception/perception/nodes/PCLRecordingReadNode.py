@@ -28,20 +28,24 @@ class PCLRecordingReader(Node):
         period = 1.0 / max(self.fps, 1.0)
         self.timer = self.create_timer(period, self.on_timer)
 
-        self.get_logger().info(f"Publishing /lidar/raw at ~{self.fps} Hz using NPZFrameReader()")
+        self.get_logger().info(f"Publishing /lidar/raw at ~{self.fps} Hz using NPZFrameReader()", throttle_duration_sec=1.0)
 
     def on_timer(self):
         try:
             arr = self.reader.read() 
         except StopIteration:
-            self.get_logger().info("NPZ sequence finished.")
+            self.get_logger().info("Frame sequence finished.")
             return
         except Exception as e:
             self.get_logger().error(f"Reader error: {e}")
             return
 
         # arr has fields: x,y,z, Epoch time (usec), Frame, ...
-        xyz = np.vstack([arr["x"], arr["y"], arr["z"]]).T.astype(np.float32)
+        # xyz = np.vstack([arr["x"], arr["y"], arr["z"]]).T.astype(np.float32) - Understand which option is faster
+        xyz = np.empty((arr.shape[0], 3), dtype=np.float32)
+        xyz[:, 0] = arr["x"]
+        xyz[:, 1] = arr["y"]
+        xyz[:, 2] = arr["z"]
 
         header = Header()
         header.frame_id = self.default_frame_id

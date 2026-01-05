@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import PointCloud2
+from std_msgs.msg import Header
 
 from perception.utils.pc2_npy import make_fields, numpy_to_pointcloud2, pointcloud2_to_numpy
 from perception.lidar.algo.calibration.python.auto_calibration import auto_calibrate_point_cloud
@@ -36,7 +37,7 @@ class PCLPreprocessNode(Node):
         self.rot_mat = None
         self.T = None
 
-        self.get_logger().info(f"Preprocess: {self.in_topic} -> {self.out_topic}")
+        self.get_logger().info(f"Preprocess: {self.in_topic} -> {self.out_topic}", throttle_duration_sec=1.0)
 
     def call_back(self, msg: PointCloud2):
         t0 = time.time()
@@ -78,9 +79,11 @@ class PCLPreprocessNode(Node):
         t5 = time.time()
 
         # 9) publish as PointCloud2
-        header = msg.header
+        header = Header()
+        header.stamp = msg.header.stamp
         header.frame_id = self.publish_frame_id
 
+        # Check processed dtype and remove .astype(np.float32) if it is it.
         out_msg = numpy_to_pointcloud2(processed.astype(np.float32), header, self.fields, self.point_step)
         self.pub.publish(out_msg)
 
@@ -91,7 +94,8 @@ class PCLPreprocessNode(Node):
                 f"calib={(t3-t2)*1000:.1f} "
                 f"clear_ground={(t4-t3)*1000:.1f} "
                 f"rt={(t5-t4)*1000:.1f} total={(t5-t0)*1000:.1f} "
-                f"pts_in={orig_frame.shape[0]} pts_out={processed.shape[0]}"
+                f"pts_in={orig_frame.shape[0]} pts_out={processed.shape[0]}",
+                throttle_duration_sec=10.0
             )
 
 def main():
