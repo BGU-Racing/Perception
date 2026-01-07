@@ -28,11 +28,6 @@ attach:
 	@echo "🔗 Opening shell in container: $(CONTAINER_NAME)"
 	docker exec -it $(CONTAINER_NAME) /bin/bash
 
-# --- Stop Container ---
-stop:
-	@echo "🛑 Stopping container..."
-	docker stop $(CONTAINER_NAME) || true
-
 # --- Delete Container ---
 clean:
 	@echo "🗑 Removing container..."
@@ -41,7 +36,6 @@ clean:
 help:
 	@echo "Available commands:"
 	@echo "  make build    - Build Docker image"
-	@echo "  make run      - Run (or start) Docker container"
+	@echo "  make run      - Run Docker container"
 	@echo "  make attach   - Open a new shell in the container"
-	@echo "  make stop     - Stop container"
 	@echo "  make clean    - Remove container"

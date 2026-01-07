@@ -17,45 +17,33 @@ PERCEPTION/
 │   ├── Makefile
 │   └── Dockerfile
 ├── src/
-│   └── ros/
-│       └── src/
-│           └── perception/
-│               ├── perception/
-│               │   ├── camera/
-│               │   ├── lidar/
-│               │   │   ├── algo/
-│               │   │   │   ├── calibration/
-│               │   │   │   │   └── python/
-│               │   │   │   └── detection/
-│               │   │   │       └── python/
-│               │   │   ├── readers/
-│               │   │   │   └── python/
-│               │   │   └── visualizers/
-│               │   └── nodes/
-│               ├── resource/
-│               └── test/
+│   └── perception/
+│        ├── perception/
+│        │   ├── camera/
+│        │   ├── lidar/
+│        │   │   ├── algo/
+│        │   │   │   ├── calibration/
+│        │   │   │   │   └── python/
+│        │   │   │   └── detection/
+│        │   │   │       └── python/
+│        │   │   ├── readers/
+│        │   │   │   └── python/
+│        │   │   └── visualizers/
+│        │   └── nodes/
+│        └── test/
 ├── tests/
 ├── utils/
 └── README.md
 ```
 
-## Development Environment (Docker + ROS 2 Jazzy)
+## Development Environment 
 
 ### 1. Build the Docker image
-From the `deployment/` directory:
+From the `root/` directory:
 
 ```
-cd deployment
 make build
 ```
-
-You may also build manually:
-
-```
-docker build -t ros2-jazzy-dev-image -f Dockerfile .
-```
-
----
 
 ### 2. Run the container
 Using the Makefile:
@@ -64,7 +52,7 @@ Using the Makefile:
 make run
 ```
 
-This will create (or start) a container named:
+This will start a container named:
 
 ```
 ros2-jazzy-dev-container
@@ -76,74 +64,53 @@ Your host repository root is mounted into the container at:
 /workspace
 ```
 
+```
+cd Perception
+```
+
 ---
 
-### 3. Attach to the container
+### 3. Attach, exit and delete the container
 
 ```
 make attach
-```
-
-Or manually:
-
-```
-docker attach ros2-jazzy-dev-container
-```
-
----
-
-### 4. Stop and remove the container
-
-```
-make stop
+exit
 make clean
 ```
 
 ---
 
-## Inside the Container
+## 5. Inside the Container
 
-ROS 2 and the Python virtual environment are automatically sourced.
+Once inside the container, ROS 2 Jazzy and the Python virtual environment are already sourced.
 
-You can run ROS and development commands normally:
+### Build the ROS workspace
 
-```
-ros2 run <package> <node>
-ros2 topic list
-python3
-colcon build
-```
-
----
-
-## Repository Structure
+Navigate to the ROS workspace and build all packages:
 
 ```
-Perception/
-│
-├── deployment/
-│
-├── src/           
-│   ├── camera/
-│   ├── lidar/
-│   └── ros/
-│
-├── tests/
-│
-└── README.md
+cd /Perception/src
+colcon build --symlink-install
 ```
 
----
-
-## Getting Started
+After building, source the workspace:
 
 ```
-source /workspace/src/ros/install/setup.bash
+source install/setup.bash
 ```
 
-5. Run your perception nodes.
+Run the perception pipeline
 
----
+```
+ros2 launch perception PCLPipeline.launch.py
+```
+
+Run individual nodes
+```
+ros2 run perception pcl_recording_reader
+ros2 run perception pcl_preprocess
+ros2 run perception pcl_detection
+```
 
 ## Notes
 

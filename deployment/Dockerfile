@@ -3,7 +3,8 @@ FROM ros:jazzy-perception
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Etc/UTC
 
-WORKDIR /workspace
+WORKDIR /workspace 
+#/Perception
 
 # System tools + ROS dev basics (keep system python for ROS, but we’ll use a venv for ML deps)
 RUN apt-get update && \
