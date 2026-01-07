@@ -1,7 +1,9 @@
 # --- Config ---
-IMAGE_NAME = ros2-jazzy-dev-image
-CONTAINER_NAME = ros2-jazzy-dev-container
-WORKSPACE_DIR = $(PWD)/..
+IMAGE_NAME := ros2-jazzy-dev-image
+CONTAINER_NAME := ros2-jazzy-dev-container
+WORKSPACE_DIR := $(CURDIR)/..
+
+.PHONY: build run attach stop clean help
 
 # --- Build Docker Image ---
 build:
@@ -11,9 +13,9 @@ build:
 # --- Run Container ---
 run: build
 	@echo "🏃 Starting container: $(CONTAINER_NAME)"
-	@if [ $$(docker ps -aq -f name=$(CONTAINER_NAME)) ]; then \
+	@if [ "$$(docker ps -aq -f name=^$(CONTAINER_NAME)$$)" ]; then \
 		echo "🔄 Reusing existing container..."; \
-		docker start -i $(CONTAINER_NAME); \
+		docker start -ai $(CONTAINER_NAME); \
 	else \
 		echo "✨ Creating new container..."; \
 		docker run -it --name $(CONTAINER_NAME) \
@@ -21,10 +23,10 @@ run: build
 			$(IMAGE_NAME); \
 	fi
 
-# --- Attach to Running Container ---
+# --- Open a NEW shell in the container (recommended) ---
 attach:
-	@echo "🔗 Attaching to container: $(CONTAINER_NAME)"
-	docker attach $(CONTAINER_NAME)
+	@echo "🔗 Opening shell in container: $(CONTAINER_NAME)"
+	docker exec -it $(CONTAINER_NAME) /bin/bash
 
 # --- Stop Container ---
 stop:
@@ -40,6 +42,6 @@ help:
 	@echo "Available commands:"
 	@echo "  make build    - Build Docker image"
 	@echo "  make run      - Run (or start) Docker container"
-	@echo "  make attach   - Attach to running container"
+	@echo "  make attach   - Open a new shell in the container"
 	@echo "  make stop     - Stop container"
 	@echo "  make clean    - Remove container"

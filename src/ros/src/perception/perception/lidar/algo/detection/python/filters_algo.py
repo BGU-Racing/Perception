@@ -177,11 +177,11 @@ class LidarFilter:
 
         # Visualiztion
         # TODO: I dont know how it works, but it is important to make this work.
-        if len(ground_points):
-            ground_pcd = o3d.geometry.PointCloud()
-            ground_pcd.points = o3d.utility.Vector3dVector(ground_points)
-            ground_pcd.paint_uniform_color([0.0, 1.0, 0.0])
-            o3d.visualization.draw_geometries([ground_pcd], window_name="Ground Points")
+        # if len(ground_points):
+        #     ground_pcd = o3d.geometry.PointCloud()
+        #     ground_pcd.points = o3d.utility.Vector3dVector(ground_points)
+        #     ground_pcd.paint_uniform_color([0.0, 1.0, 0.0])
+        #     o3d.visualization.draw_geometries([ground_pcd], window_name="Ground Points")
 
 
     def filter_clusters(self):

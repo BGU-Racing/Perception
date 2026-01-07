@@ -9,7 +9,7 @@ class NPZFrameReader:
     and returns a structured NumPy array.
     """
 
-    def __init__(self, data_dir: str = "/workspace/data", pattern: str = "*.npz", loop: bool = True):
+    def __init__(self, data_dir: str = "/workspace/Perception/data", pattern: str = "*.npz", loop: bool = True):
         self.files = sorted(glob.glob(os.path.join(data_dir, pattern)))
         if not self.files:
             raise FileNotFoundError(f"No NPZ files found in {data_dir} with pattern {pattern}")
