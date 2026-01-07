@@ -11,7 +11,7 @@ build:
 	docker build -t $(IMAGE_NAME) -f deployment/Dockerfile .
 
 # --- Run Container ---
-run: build
+run:
 	@echo "🏃 Starting container: $(CONTAINER_NAME)"
 	@if [ "$$(docker ps -aq -f name=^$(CONTAINER_NAME)$$)" ]; then \
 		echo "🔄 Reusing existing container..."; \
